@@ -56,7 +56,7 @@
 					let j = 0;
 						let yNum = (i > 14 && i < 20)? 10 : 50;
 						yNum = (i >= 30 && i < 40) ? 20 : yNum;
-						yNum = (i >= 40 && i < 45) ? 1: yNum;
+						yNum = (i >= 40 && i < 45) ? 3: yNum;
 						yNum = (i >= 45) ? 0: yNum;
 						while(j < yNum){
 							let flag = Math.random() > 0.5? 1 : -1;
@@ -73,10 +73,11 @@
 
 			function loadHerIMG(i){
 				let her = new Image();
-				her.src = "img/fz.jpg";
+				her.src = "img/msm.jpg";
 				her.onload = function(){
 					setTimeout(()=>{
-						ctx.drawImage(this, canvas.width / 2 -40 ,canvas.height / 2 -80, 90,160);
+						// ctx.drawImage(this, canvas.width / 2 -40 ,canvas.height / 2 -80, 90,160); //fz
+						ctx.drawImage(this, canvas.width / 2 -80 ,canvas.height / 2 -80, 160,160);
 					}, 100 * i);
 				}
 			}
