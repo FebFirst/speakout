@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang = "en">
+	<head>
+		<meta charset = "utf-8">
+		<title>GoogOL</title>
+		<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+	</head>
+	<body>
+		<canvas></canvas>
+
+		<script>
+			var canvas = document.querySelector('canvas');
+			var ctx = canvas.getContext('2d');
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+
+			var Heart = function(x, y){
+				this.colors = ['#FF6EB4','#FF3E96','#FF34B3','#FF0000','#F08080','#CD919E','#CD6090','#CD5C5C'];
+				this.x = x;
+				this.y = y;
+				this.vertices = [];
+				let size = Math.random() + 0.5;
+				for(let i = 0; i < 30; i ++){
+					let step = i / 30 * (Math.PI * 2);
+					let point = {
+						x : (16 * Math.pow(Math.sin(step), 3)) * size,
+						y : -(13 * Math.cos(step) - 5 * Math.cos(2 * step) - 2 * Math.cos(3 * step) - Math.cos(4 * step)) * size
+					}
+					// let point = {
+					// 	x : 10 *(2 * Math.cos(step) - Math.cos(2 * step)),
+					// 	y : 10 *(2 * Math.sin(step) - Math.sin(2 * step))
+					// }
+					this.vertices.push(point);
+				}
+			}
+
+			function draw(heart){
+				ctx.save();
+				ctx.translate(-1000, heart.y);
+				ctx.beginPath();
+
+				for(let i = 0; i < heart.vertices.length; i ++){
+					let point = heart.vertices[i];
+					ctx.lineTo(point.x, point.y);
+				}
+				
+				let index = Math.round(Math.random() * heart.colors.length);
+				ctx.shadowColor = heart.colors[index];
+				ctx.shadowOffsetX = heart.x + 1000;
+				ctx.fill();
+				ctx.restore();
+			}
+
+			function moveHearts(i, area){
+				setTimeout(()=>{
+					let j = 0;
+						let yNum = (i > 14 && i < 20)? 10 : 50;
+						yNum = (i >= 30 && i < 40) ? 20 : yNum;
+						yNum = (i >= 40 && i < 45) ? 1: yNum;
+						yNum = (i >= 45) ? 0: yNum;
+						while(j < yNum){
+							let flag = Math.random() > 0.5? 1 : -1;
+							let pos =  Math.random();
+							let x = i > 28 ? flag * pos * (area[i].x) + canvas.width / 2 : flag *( pos * (area[i].x -area[28 - i].x) +  area[28 - i].x)+ canvas.width / 2;
+							let y = (area[i].y) + canvas.height / 2;
+							let heart = new Heart(x, y);
+							draw(heart);
+							j ++;
+						}
+						
+					}, 100 * (49 - i));
+			}
+
+			function loadHerIMG(i){
+				let her = new Image();
+				her.src = "img/msm.jpg";
+				her.onload = function(){
+					setTimeout(()=>{
+						ctx.drawImage(this, canvas.width / 2 ,canvas.height / 2);
+					}, 100 * i);
+				}
+			}
+			$(document).ready(function(event){
+				let area = [];
+				for(let i = 0; i < 50; i ++){
+					let step = i / 50 * (Math.PI);
+					let point = {
+						x : (16 * Math.pow(Math.sin(step), 3)) * 20,
+						y : -(13 * Math.cos(step) - 5 * Math.cos(2 * step) - 2 * Math.cos(3 * step) - Math.cos(4 * step)) * 20
+					}
+					area.push(point);
+				}
+				console.log([canvas.height , canvas.width]);
+				let i = 14;
+				while(i < 50 && area.length === 50){
+					moveHearts(i, area);
+					i ++;
+				}
+				//loadHerIMG(50);
+			});
+		</script>
+	</body>
+</html>
