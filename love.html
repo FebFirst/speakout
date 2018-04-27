@@ -73,10 +73,10 @@
 
 			function loadHerIMG(i){
 				let her = new Image();
-				her.src = "img/msm.jpg";
+				her.src = "img/fz.jpg";
 				her.onload = function(){
 					setTimeout(()=>{
-						ctx.drawImage(this, canvas.width / 2 -80 ,canvas.height / 2 -80, 160,160);
+						ctx.drawImage(this, canvas.width / 2 -40 ,canvas.height / 2 -80, 90,160);
 					}, 100 * i);
 				}
 			}
@@ -90,7 +90,7 @@
 					}
 					area.push(point);
 				}
-				console.log([canvas.height , canvas.width]);
+				//console.log([canvas.height , canvas.width]);
 				let i = 14;
 				while(i < 50 && area.length === 50){
 					moveHearts(i, area);
